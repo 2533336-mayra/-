@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>春晚笑点追综仪</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: #8b0000; /* Deep Festive Red */
+            color: #fff;
+            font-family: 'Noto Serif SC', serif;
+            /* Subtle traditional pattern overlay */
+            background-image: radial-gradient(circle at 2px 2px, rgba(255, 215, 0, 0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+        .font-cursive {
+            font-family: 'Zhi+Mang+Xing', cursive;
+        }
+        /* Custom Magnifier Cursor */
+        .magnifier-cursor {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 215, 0, 0.1);
+            backdrop-filter: blur(2px);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+        .magnifier-handle {
+            width: 15px;
+            height: 3px;
+            background: #ffd700; /* Gold handle */
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            transform: rotate(45deg);
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "lucide-react": "https://esm.sh/lucide-react@^0.561.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+  }
+}
+</script>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+</html>
