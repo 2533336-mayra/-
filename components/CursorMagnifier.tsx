@@ -28,26 +28,25 @@ const CursorMagnifier: React.FC = () => {
       style={{ 
         left: `${position.x}px`, 
         top: `${position.y}px`,
-        transform: `translate(-20%, -20%) scale(${active ? 1.1 : 1}) rotate(-10deg)`
+        transform: `translate(-25%, -25%) scale(${active ? 1.1 : 1}) rotate(-32deg)`,
+        transformOrigin: 'top center'
       }}
     >
-      <div className="relative">
-        {/* Compact Lens and Silver Rim - roughly 40px diameter (standard cursor-ish size) */}
-        <div className="w-10 h-10 rounded-full border-[3px] border-[#d1d1d1] bg-white/10 backdrop-blur-[1px] shadow-[0_4px_12px_rgba(0,0,0,0.5),inset_0_0_8px_rgba(255,255,255,0.2)] flex items-center justify-center relative overflow-hidden">
-          {/* Glass Glint Effect */}
-          <div className="absolute top-1 left-2 w-5 h-2.5 bg-white/20 rounded-[100%] rotate-[-25deg]"></div>
-          
-          {/* Subtle reflection overlay */}
+      <div className="relative flex flex-col items-center">
+        {/* Tiny Glass Lens & Silver Rim */}
+        <div className="w-7 h-7 rounded-full border-[2px] border-[#e5e5e5] bg-white/10 backdrop-blur-[0.5px] shadow-[0_2px_8px_rgba(0,0,0,0.5),inset_0_0_4px_rgba(255,255,255,0.4)] relative overflow-hidden z-20">
+          {/* Lens Glint */}
+          <div className="absolute top-0.5 left-1 w-3 h-1.5 bg-white/30 rounded-full rotate-[-30deg]"></div>
+          {/* Glass detail */}
           <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10"></div>
         </div>
 
-        {/* The Metal Neck Piece - Scaled down */}
-        <div className="absolute top-[34px] left-[32px] w-2 h-3 bg-gradient-to-r from-[#888] via-[#eee] to-[#888] rounded-sm transform rotate-[-45deg] z-10 border border-black/10"></div>
+        {/* Tiny Neck */}
+        <div className="w-1 h-1.5 bg-gradient-to-r from-[#888] via-[#f5f5f5] to-[#888] -mt-0.5 z-10"></div>
 
-        {/* The Black Handle - Scaled down */}
-        <div className="absolute top-[39px] left-[37px] w-2.5 h-12 bg-gradient-to-r from-[#111] via-[#333] to-[#111] rounded-full transform rotate-[-45deg] shadow-lg border-x border-white/5">
-          {/* Handle highlights */}
-          <div className="absolute inset-y-0 left-0.5 w-0.5 bg-white/10 rounded-full"></div>
+        {/* Tiny Black Polished Handle */}
+        <div className="w-2 h-7 bg-gradient-to-r from-[#000] via-[#333] to-[#000] rounded-b-full shadow-md border-x border-white/10 -mt-0.5">
+          <div className="mx-auto mt-0.5 w-[0.5px] h-4 bg-white/20 rounded-full"></div>
         </div>
       </div>
     </div>
