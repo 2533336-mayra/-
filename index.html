@@ -12,7 +12,7 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-            background-color: #900; /* Festive Red */
+            background-color: #000;
             color: #fff;
             font-family: 'Noto Serif SC', serif;
         }
@@ -20,19 +20,19 @@
             font-family: 'Zhi Mang Xing', cursive;
         }
         
-        /* Global Reset to hide cursor everywhere for the magnifier */
+        /* 全局隐藏光标以配合自定义放大镜 */
         * {
             cursor: none !important;
         }
 
-        /* Animation for the floating drift effect */
+        /* 胶片漂浮效果 */
         @keyframes drift {
           0% { transform: translate(0, 0) rotate(var(--base-rotation, -5deg)); }
-          50% { transform: translate(-20px, 10px) rotate(calc(var(--base-rotation, -5deg) + 1deg)); }
+          50% { transform: translate(-30px, 15px) rotate(calc(var(--base-rotation, -5deg) + 1.5deg)); }
           100% { transform: translate(0, 0) rotate(var(--base-rotation, -5deg)); }
         }
 
-        /* Animation for scrolling film frames */
+        /* 胶片滚动效果 */
         @keyframes scroll-film {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
@@ -41,6 +41,17 @@
         @keyframes scroll-film-reverse {
           0% { transform: translateX(-50%); }
           100% { transform: translateX(0); }
+        }
+
+        /* 扫描线效果 */
+        @keyframes scan {
+          0% { transform: translateY(-100%); }
+          100% { transform: translateY(400%); }
+        }
+
+        /* 自定义径向渐变辅助类 */
+        .bg-radial-gradient {
+            background: radial-gradient(circle at center, var(--tw-gradient-from) 0%, var(--tw-gradient-to) 100%);
         }
     </style>
 <script type="importmap">
