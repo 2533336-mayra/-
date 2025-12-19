@@ -20,33 +20,30 @@
             background-size: 40px 40px;
         }
         .font-cursive {
-            font-family: 'Zhi+Mang+Xing', cursive;
+            font-family: 'Zhi Mang Xing', cursive;
         }
-        /* Custom Magnifier Cursor */
-        .magnifier-cursor {
-            width: 40px;
-            height: 40px;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 215, 0, 0.1);
-            backdrop-filter: blur(2px);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        
+        /* Global Reset to hide cursor everywhere for the magnifier */
+        * {
+            cursor: none !important;
         }
-        .magnifier-handle {
-            width: 15px;
-            height: 3px;
-            background: #ffd700; /* Gold handle */
-            position: absolute;
-            bottom: -5px;
-            right: -5px;
-            transform: rotate(45deg);
+
+        /* Animation for the floating drift effect */
+        @keyframes drift {
+          0% { transform: translate(0, 0) rotate(var(--base-rotation, -5deg)); }
+          50% { transform: translate(-30px, 20px) rotate(calc(var(--base-rotation, -5deg) + 2deg)); }
+          100% { transform: translate(0, 0) rotate(var(--base-rotation, -5deg)); }
+        }
+
+        /* Animation for scrolling film frames */
+        @keyframes scroll-film {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+
+        @keyframes scroll-film-reverse {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
         }
     </style>
 <script type="importmap">
@@ -62,6 +59,5 @@
 </head>
 <body>
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
 </body>
 </html>

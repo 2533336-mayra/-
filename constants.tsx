@@ -1,15 +1,6 @@
 
 import { VideoData } from './types';
 
-export const FILMSTRIP_IMAGES = [
-  'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=800',
-  'https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&q=80&w=800',
-  'https://images.unsplash.com/photo-1514306191717-452ec28c7814?auto=format&fit=crop&q=80&w=800',
-  'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&q=80&w=800',
-  'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=800',
-  'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=80&w=800',
-];
-
 export const VIDEOS: VideoData[] = [
   {
     id: 'yesterday-today-tomorrow',
@@ -82,7 +73,7 @@ export const VIDEOS: VideoData[] = [
         timestamp: 18,
         content: '魔术师：这不是托儿，这是真观众。观众：对，我是魔术师雇来的真观众。',
         mechanism: '自设身份的消解（元幽默）',
-        analysis: '通过主动承认“托儿”的可能性并将其作为调侃对象，打破了表演的第四面墙。这种自我解构消除了观众的敌意和质疑，将其转化为共谋的快感。'
+        analysis: '通过主动承认“托儿”的可能性并将其作为调侃对象，打破了表演的第四面墙。这种自我解构消除了观众的敌意 and 质疑，将其转化为共谋的快感。'
       },
       {
         timestamp: 28,
