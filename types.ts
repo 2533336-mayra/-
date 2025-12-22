@@ -4,10 +4,12 @@ export enum AppState {
   TRANSITION_TO_CH1 = 'TRANSITION_TO_CH1',
   CHAPTER_ONE = 'CHAPTER_ONE',
   TRANSITION_TO_CH2 = 'TRANSITION_TO_CH2',
-  CHAPTER_TWO = 'CHAPTER_TWO'
+  CHAPTER_TWO = 'CHAPTER_TWO',
+  TRANSITION_TO_CH3 = 'TRANSITION_TO_CH3',
+  CHAPTER_THREE = 'CHAPTER_THREE'
 }
 
-export type SubTab = 'ORIGINS' | 'EVOLUTION' | 'CONSTELLATION' | 'NETWORK';
+export type SubTab = 'ORIGINS' | 'EVOLUTION' | 'CONSTELLATION' | 'NETWORK' | 'TRENDS';
 
 export interface HumorPoint {
   timestamp: number;
@@ -36,7 +38,6 @@ export interface EvolutionProgram {
   }[];
 }
 
-// Fix: Corrected '夸张试听' to '夸张视听' to match the term for visual/audio performance and usage in constants.tsx
 export type HumorType = '语言包袱' | '人物反差' | '逻辑乌龙' | '民生吐槽' | '夸张视听';
 
 export interface Performer {
@@ -53,4 +54,26 @@ export interface Relation {
   source: string;
   target: string;
   type: '搭档' | '师徒' | '传承';
+}
+
+export interface MemeImagePoint {
+  offset: number; // 0-100
+  imageUrl: string;
+  label: string;
+}
+
+export interface TrendDataPoint {
+  date: string;
+  posts: number;    // 发帖数
+  likes: number;    // 点赞数
+  comments: number; // 评论量
+}
+
+export interface MemeTrend {
+  id: string;
+  hashtag: string;
+  period: string;
+  totalData: number;
+  points: TrendDataPoint[];
+  visualHistory: MemeImagePoint[];
 }

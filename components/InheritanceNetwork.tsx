@@ -1,20 +1,20 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { PERFORMERS, RELATIONS } from '../constants';
 import { Share2, Users, ArrowUpRight } from 'lucide-react';
 
-// 简化的节点坐标分布 (为了演示效果手动定义，实际可用力导向算法)
+// 节点坐标分布 (同步 constants.tsx 中的 ID)
 const NODE_POSITIONS: Record<string, {x: number, y: number}> = {
-  'ZBS': {x: 500, y: 300},
-  'SDD': {x: 400, y: 150},
-  'XSY': {x: 650, y: 150},
-  'FG': {x: 300, y: 500},
-  'NQ': {x: 150, y: 450},
-  'CM': {x: 700, y: 450},
-  'PCJ': {x: 850, y: 500},
-  'GDL': {x: 550, y: 550},
-  'ST': {x: 800, y: 300},
-  'ZLR': {x: 150, y: 200},
+  'ZBS': {x: 500, y: 350},
+  'SDD': {x: 350, y: 200},
+  'XSY': {x: 650, y: 200},
+  'FG': {x: 300, y: 550},
+  'NQ': {x: 150, y: 500},
+  'CM': {x: 750, y: 500},
+  'GDL': {x: 550, y: 600},
+  'ST': {x: 850, y: 350},
+  'ML': {x: 850, y: 200},
+  'ZLR': {x: 150, y: 250},
 };
 
 const InheritanceNetwork: React.FC = () => {
@@ -44,39 +44,47 @@ const InheritanceNetwork: React.FC = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full h-[700px] mt-20 bg-[#111] rounded-[3rem] border border-white/5 overflow-hidden group cursor-grab active:cursor-grabbing"
+      className="relative w-full h-[750px] bg-[#0a0a0a] rounded-[3.5rem] border border-white/5 overflow-hidden group cursor-grab active:cursor-grabbing shadow-[inset_0_0_100px_rgba(0,0,0,1)]"
       onWheel={handleScroll}
     >
       {/* HUD Info */}
-      <div className="absolute top-8 left-8 z-20 space-y-2 pointer-events-none">
-         <div className="flex items-center gap-3 bg-black/60 px-4 py-2 rounded-full border border-white/10 backdrop-blur-md">
-            <Share2 className="text-yellow-500" size={16} />
+      <div className="absolute top-8 left-8 z-20 space-y-3 pointer-events-none">
+         <div className="flex items-center gap-3 bg-red-950/40 px-5 py-2.5 rounded-full border border-red-900/20 backdrop-blur-xl">
+            <Share2 className="text-yellow-500" size={18} />
             <span className="text-xs font-black text-white uppercase tracking-widest">幽默基因组 · 传承网脉</span>
          </div>
-         <p className="text-[10px] text-white/40 font-bold uppercase ml-4">Scroll to Zoom · Click to Filter Ego-Network</p>
+         <div className="flex flex-col gap-1 ml-5">
+            <p className="text-[10px] text-white/40 font-bold uppercase">Scroll to Zoom · Click Node to Focus</p>
+            <div className="flex items-center gap-2">
+               <div className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></div>
+               <span className="text-[9px] text-yellow-500/60 font-black">ACTIVE NODE SCANNING</span>
+            </div>
+         </div>
       </div>
 
       <div 
-        className="w-full h-full transition-transform duration-500 ease-out flex items-center justify-center"
+        className="w-full h-full transition-transform duration-700 cubic-bezier(0.2, 0, 0, 1) flex items-center justify-center"
         style={{ transform: `scale(${zoom})` }}
       >
-        <svg className="w-[1000px] h-[700px] relative">
+        <svg className="w-[1000px] h-[750px] relative overflow-visible">
           {/* Relations (Lines) */}
           {RELATIONS.map((rel, i) => {
             const start = NODE_POSITIONS[rel.source];
             const end = NODE_POSITIONS[rel.target];
+            if (!start || !end) return null; // 防御性检查
+            
             const active = isLinkRelated(rel);
             return (
-              <g key={i}>
+              <g key={`rel-${i}`}>
                 <line 
                   x1={start.x} y1={start.y} x2={end.x} y2={end.y}
-                  stroke={active ? "rgba(234, 179, 8, 0.6)" : "rgba(255, 255, 255, 0.05)"}
-                  strokeWidth={active ? "3" : "1"}
-                  className="transition-all duration-500"
+                  stroke={active ? "rgba(234, 179, 8, 0.4)" : "rgba(255, 255, 255, 0.03)"}
+                  strokeWidth={active ? "2.5" : "1"}
+                  className="transition-all duration-700"
                 />
                 {active && selectedNode && (
-                  <circle r="4" fill="#eab308">
-                    <animateMotion dur="3s" repeatCount="indefinite" path={`M ${start.x} ${start.y} L ${end.x} ${end.y}`} />
+                  <circle r="3" fill="#eab308" className="shadow-[0_0_10px_rgba(234,179,8,1)]">
+                    <animateMotion dur="2.5s" repeatCount="indefinite" path={`M ${start.x} ${start.y} L ${end.x} ${end.y}`} />
                   </circle>
                 )}
               </g>
@@ -86,30 +94,49 @@ const InheritanceNetwork: React.FC = () => {
           {/* Nodes (Circles) */}
           {PERFORMERS.map((perf) => {
             const pos = NODE_POSITIONS[perf.id];
+            if (!pos) return null; // 节点必须有定义坐标
+            
             const active = isRelated(perf.id);
-            if (!pos) return null;
+            const isSelected = selectedNode === perf.id;
+            
             return (
               <g 
-                key={perf.id} 
-                className={`cursor-none transition-all duration-500 ${active ? 'opacity-100' : 'opacity-20 grayscale'}`}
-                onClick={() => setSelectedNode(selectedNode === perf.id ? null : perf.id)}
+                key={`node-${perf.id}`} 
+                className={`cursor-none transition-all duration-700 ${active ? 'opacity-100' : 'opacity-10 grayscale'}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedNode(isSelected ? null : perf.id);
+                }}
               >
+                {/* Node Outer Glow */}
+                {isSelected && (
+                  <circle cx={pos.x} cy={pos.y} r="50" fill="none" stroke="#eab308" strokeWidth="1" strokeDasharray="5,5" className="animate-spin-slow" />
+                )}
+                
+                {/* Main Node */}
                 <circle 
-                  cx={pos.x} cy={pos.y} r={selectedNode === perf.id ? "35" : "25"} 
-                  fill={selectedNode === perf.id ? "#800" : "#222"}
-                  stroke={selectedNode === perf.id ? "#eab308" : "rgba(255,255,255,0.1)"}
+                  cx={pos.x} cy={pos.y} r={isSelected ? "38" : "28"} 
+                  fill={isSelected ? "#700" : "#1a1a1a"}
+                  stroke={isSelected ? "#eab308" : "rgba(255,255,255,0.08)"}
                   strokeWidth="2"
-                  className="transition-all duration-300 hover:fill-[#333]"
+                  className="transition-all duration-300 hover:fill-[#222]"
                 />
+                
+                {/* Text Label */}
                 <text 
                   x={pos.x} y={pos.y + 5} 
                   textAnchor="middle" 
-                  className={`font-black text-[10px] pointer-events-none fill-white`}
+                  className={`font-black text-[11px] pointer-events-none ${isSelected ? 'fill-yellow-400' : 'fill-white/80'}`}
                 >
                   {perf.name}
                 </text>
-                {selectedNode === perf.id && (
-                  <circle cx={pos.x} cy={pos.y} r="45" fill="none" stroke="#eab308" strokeWidth="1" strokeDasharray="4,4" className="animate-spin" />
+                
+                {/* Relationship Type Badge */}
+                {isSelected && (
+                   <g transform={`translate(${pos.x - 20}, ${pos.y - 55})`}>
+                      <rect width="40" height="14" rx="7" fill="#eab308" />
+                      <text x="20" y="10" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#000">FOCUS</text>
+                   </g>
                 )}
               </g>
             );
@@ -117,17 +144,30 @@ const InheritanceNetwork: React.FC = () => {
         </svg>
       </div>
 
-      {/* Legend */}
-      <div className="absolute bottom-8 right-8 flex gap-6 bg-black/40 p-4 rounded-2xl border border-white/5 backdrop-blur-md">
-         <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
-            <span className="text-[9px] font-black text-white/60 uppercase">血缘协作</span>
-         </div>
-         <div className="flex items-center gap-2">
-            <Users className="text-white/40" size={14} />
-            <span className="text-[9px] font-black text-white/60 uppercase">多维度交互图谱</span>
-         </div>
+      {/* Legend & Stats */}
+      <div className="absolute bottom-10 right-10 flex flex-col gap-4">
+        <div className="flex gap-6 bg-black/60 p-5 rounded-3xl border border-white/5 backdrop-blur-xl shadow-2xl">
+          <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.5)]"></div>
+              <span className="text-[10px] font-black text-white/60 uppercase tracking-widest">师承协作</span>
+          </div>
+          <div className="flex items-center gap-2">
+              <Users className="text-white/40" size={16} />
+              <span className="text-[10px] font-black text-white/60 uppercase tracking-widest">多代际交互</span>
+          </div>
+        </div>
       </div>
+      
+      <style>{`
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+          transform-origin: center;
+          animation: spin-slow 15s linear infinite;
+        }
+      `}</style>
     </div>
   );
 };
