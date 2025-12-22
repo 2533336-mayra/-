@@ -69,51 +69,57 @@ export const TREND_DATA: MemeTrend[] = [
     id: 'nigemaiti-fail',
     hashtag: '#尼格买提魔术失败',
     period: '2024.02 - 2025.12',
-    totalData: 1560,
-    points: Array.from({length: 40}, (_, i) => ({
-      date: `T${i}`,
-      posts: i < 5 ? 200 - i*20 : 20 + Math.random()*10,
-      likes: i < 5 ? 500 - i*50 : 50 + Math.random()*30,
-      comments: i < 5 ? 300 - i*30 : 30 + Math.random()*20
-    })),
+    totalData: 15620,
+    points: Array.from({length: 60}, (_, i) => {
+      const base = Math.sin(i / 10) * 50 + 100;
+      return {
+        date: `T${i}`,
+        posts: i < 8 ? 600 - i * 60 : base + Math.random() * 20,
+        likes: i < 8 ? 1500 - i * 150 : base * 2.5 + Math.random() * 50,
+        comments: i < 8 ? 800 - i * 80 : base * 1.5 + Math.random() * 30
+      };
+    }),
     visualHistory: [
-      { offset: 0, imageUrl: 'https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=500', label: '2024：魔术穿帮瞬间' },
-      { offset: 40, imageUrl: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=500', label: '2024年中：全网表情包狂欢' },
-      { offset: 85, imageUrl: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=500', label: '2025：节目组官宣认梗，情怀重现' }
+      { offset: 0, imageUrl: 'https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=800', label: '2024.02：舞台穿帮，笑点元年' },
+      { offset: 35, imageUrl: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800', label: '2024.06：全网二创，表情包霸屏' },
+      { offset: 80, imageUrl: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800', label: '2025.01：官宣联动，情怀重构' }
     ]
   },
   {
     id: 'palace-wine',
     hashtag: '#宫廷玉液酒',
     period: '1996 - 2025',
-    totalData: 4890,
-    points: Array.from({length: 40}, (_, i) => ({
-      date: `T${i}`,
-      posts: i % 10 === 0 ? 150 : 30 + Math.random()*10,
-      likes: i % 10 === 0 ? 400 : 80 + Math.random()*20,
-      comments: i % 10 === 0 ? 200 : 40 + Math.random()*15
-    })),
+    totalData: 48900,
+    points: Array.from({length: 60}, (_, i) => {
+      const spike = i % 15 === 0 ? 300 : 0;
+      return {
+        date: `T${i}`,
+        posts: 50 + spike + Math.random() * 20,
+        likes: 120 + spike * 3 + Math.random() * 50,
+        comments: 70 + spike * 2 + Math.random() * 30
+      };
+    }),
     visualHistory: [
-      { offset: 0, imageUrl: 'https://images.unsplash.com/photo-1514306191717-452ec28c7814?w=500', label: '1996：赵老师首演经典' },
-      { offset: 50, imageUrl: 'https://images.unsplash.com/photo-1541535650810-10d26f5d2abb?w=500', label: '2019：微博暗号热搜爆发' },
-      { offset: 90, imageUrl: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=500', label: '2025：跨越时代的文化烙印' }
+      { offset: 0, imageUrl: 'https://images.unsplash.com/photo-1514306191717-452ec28c7814?w=800', label: '1996：赵老师首演，金句诞生' },
+      { offset: 45, imageUrl: 'https://images.unsplash.com/photo-1541535650810-10d26f5d2abb?w=800', label: '2019：微博暗号，身份认同热搜' },
+      { offset: 90, imageUrl: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800', label: '2025：跨世纪传承，经典永存' }
     ]
   },
   {
     id: 'shen-teng-lazy',
-    hashtag: '#沈腾马丽黄金搭档',
+    hashtag: '#沈腾马丽组合',
     period: '2012 - 2025',
-    totalData: 3240,
-    points: Array.from({length: 40}, (_, i) => ({
+    totalData: 32450,
+    points: Array.from({length: 60}, (_, i) => ({
       date: `T${i}`,
-      posts: 40 + Math.sin(i/5) * 20,
-      likes: 100 + Math.sin(i/5) * 50,
-      comments: 60 + Math.sin(i/5) * 30
+      posts: 100 + Math.sin(i / 5) * 40 + Math.random() * 10,
+      likes: 250 + Math.sin(i / 5) * 100 + Math.random() * 30,
+      comments: 150 + Math.sin(i / 5) * 60 + Math.random() * 20
     })),
     visualHistory: [
-      { offset: 0, imageUrl: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=500', label: '2012：郝建初登场' },
-      { offset: 45, imageUrl: 'https://images.unsplash.com/photo-1514306191717-452ec28c7814?w=500', label: '2015：沈马组合确立地位' },
-      { offset: 95, imageUrl: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=500', label: '2025：年度喜剧神话延续' }
+      { offset: 0, imageUrl: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800', label: '2012：郝建登台，开启沈马时代' },
+      { offset: 50, imageUrl: 'https://images.unsplash.com/photo-1514306191717-452ec28c7814?w=800', label: '2015：默契爆发，喜剧巅峰对决' },
+      { offset: 95, imageUrl: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800', label: '2025：年度聚首，欢笑长尾延续' }
     ]
   }
 ];
