@@ -19,6 +19,11 @@ export interface HumorPoint {
   analysis: string;
 }
 
+export interface WordCloudItem {
+  text: string;
+  weight: number; // 1-10
+}
+
 export interface VideoData {
   id: string;
   title: string;
@@ -26,6 +31,7 @@ export interface VideoData {
   videoUrl: string;
   poster: string;
   humorPoints: HumorPoint[];
+  wordCloud: WordCloudItem[];
 }
 
 export interface EvolutionProgram {

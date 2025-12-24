@@ -37,7 +37,17 @@ export const VIDEOS: VideoData[] = [
         mechanism: '价值观冲突爆发',
         analysis: '笑点在这一刻升华为对过度商业化的辛辣讽刺，观众在欢笑中完成了对社会现象的共同审判。'
       }
-    ] 
+    ],
+    wordCloud: [
+      { text: '身份错位', weight: 10 },
+      { text: '社会讽刺', weight: 8 },
+      { text: '生活解构', weight: 9 },
+      { text: '典型人物', weight: 7 },
+      { text: '南北差异', weight: 5 },
+      { text: '肢体喜剧', weight: 8 },
+      { text: '时代注脚', weight: 6 },
+      { text: '草根叙事', weight: 7 }
+    ]
   },
   { 
     id: 'crosstalk-mj', 
@@ -64,7 +74,17 @@ export const VIDEOS: VideoData[] = [
         mechanism: '荒诞结局收场',
         analysis: '这种笑点带有明显的寓言色彩，笑点在最后的一团乱麻中爆发，体现了语言艺术对复杂人际关系的解构。'
       }
-    ] 
+    ],
+    wordCloud: [
+      { text: '语言节奏', weight: 10 },
+      { text: '谐音误会', weight: 7 },
+      { text: '三番四抖', weight: 9 },
+      { text: '贯口艺术', weight: 6 },
+      { text: '铺垫衬托', weight: 8 },
+      { text: '逻辑悖论', weight: 9 },
+      { text: '世态炎凉', weight: 5 },
+      { text: '现挂即兴', weight: 4 }
+    ]
   },
   { 
     id: 'magic-lq', 
@@ -91,7 +111,17 @@ export const VIDEOS: VideoData[] = [
         mechanism: '后续社交解构',
         analysis: '笑点不仅停留在舞台。这一刻标志着该事件正式从“表演”演变为“梗”，社交媒体的二次创作赋予了它长久的生命力。'
       }
-    ] 
+    ],
+    wordCloud: [
+      { text: '认知盲区', weight: 10 },
+      { text: '错觉引导', weight: 9 },
+      { text: '心理博弈', weight: 8 },
+      { text: '意外反转', weight: 9 },
+      { text: '交互设计', weight: 7 },
+      { text: '见证奇迹', weight: 6 },
+      { text: '逻辑闭环', weight: 8 },
+      { text: '视觉冲击', weight: 5 }
+    ]
   }
 ];
 
