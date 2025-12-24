@@ -12,6 +12,9 @@ export enum AppState {
 
 export type SubTab = 'ORIGINS' | 'EVOLUTION' | 'CONSTELLATION' | 'NETWORK' | 'TRENDS';
 
+// Added missing exported HumorType to fix constants.tsx and HumorEvolutionGrid.tsx errors
+export type HumorType = '语言包袱' | '人物反差' | '逻辑乌龙' | '民生吐槽' | '夸张视听';
+
 export interface HumorPoint {
   timestamp: number;
   content: string;
@@ -21,7 +24,7 @@ export interface HumorPoint {
 
 export interface WordCloudItem {
   text: string;
-  weight: number; // 1-10
+  weight: number; 
 }
 
 export interface VideoData {
@@ -34,6 +37,7 @@ export interface VideoData {
   wordCloud: WordCloudItem[];
 }
 
+// Added missing exported EvolutionProgram to fix constants.tsx and HumorEvolutionGrid.tsx errors
 export interface EvolutionProgram {
   id: string;
   name: string;
@@ -45,8 +49,7 @@ export interface EvolutionProgram {
   }[];
 }
 
-export type HumorType = '语言包袱' | '人物反差' | '逻辑乌龙' | '民生吐槽' | '夸张视听';
-
+// Added missing exported Performer to fix constants.tsx and BigDipperConstellation.tsx errors
 export interface Performer {
   id: string;
   name: string;
@@ -54,33 +57,68 @@ export interface Performer {
   totalWorks: number;
   bio: string;
   quotes: string[];
-  role: '奠基人' | '中坚' | '新锐';
+  role: string;
 }
 
+// Added missing exported Relation to fix constants.tsx errors
 export interface Relation {
   source: string;
   target: string;
-  type: '搭档' | '师徒' | '传承';
+  type: string;
 }
 
-export interface MemeImagePoint {
-  offset: number; // 0-100
-  imageUrl: string;
-  label: string;
-}
-
-export interface TrendDataPoint {
-  date: string;
-  posts: number;    // 发帖数
-  likes: number;    // 点赞数
-  comments: number; // 评论量
-}
-
+// Added missing exported MemeTrend to fix constants.tsx and MemeTrendStream.tsx errors
 export interface MemeTrend {
   id: string;
   hashtag: string;
   period: string;
   totalData: number;
-  points: TrendDataPoint[];
-  visualHistory: MemeImagePoint[];
+  points: {
+    date: string;
+    posts: number;
+    likes: number;
+    comments: number;
+  }[];
+  visualHistory: {
+    offset: number;
+    imageUrl: string;
+    label: string;
+  }[];
+}
+
+export interface ActorStats {
+  id: string;
+  name: string;
+  count: number;
+  partners: Map<string, number>;
+  years: number[];
+  works: string[];
+}
+
+// Defined local simulation interfaces to fix "Cannot find namespace 'd3'" errors
+export interface SimulationNodeDatum {
+  index?: number;
+  x?: number;
+  y?: number;
+  vx?: number;
+  vy?: number;
+  fx?: number;
+  fy?: number;
+}
+
+export interface SimulationLinkDatum<NodeDatum extends SimulationNodeDatum> {
+  index?: number;
+  source: string | NodeDatum;
+  target: string | NodeDatum;
+}
+
+export interface NetworkNode extends SimulationNodeDatum {
+  id: string;
+  name: string;
+  count: number;
+  stats: ActorStats;
+}
+
+export interface NetworkLink extends SimulationLinkDatum<NetworkNode> {
+  weight: number;
 }
