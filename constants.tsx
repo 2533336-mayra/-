@@ -11,11 +11,72 @@ export const HUMOR_COLORS: Record<HumorType, string> = {
 
 const HUMOR_TYPES: HumorType[] = ['语言包袱', '人物反差', '逻辑乌龙', '民生吐槽', '夸张视听'];
 
+/**
+ * 导入用户提供的 1983 年节目数据
+ */
+const USER_RAW_DATA = [
+  {
+    "name": "逛厂甸",
+    "year": 1983,
+    "laughComposition": [{ "typeId": "语言包袱", "percentage": 100 }]
+  },
+  {
+    "name": "吃鸡",
+    "year": 1983,
+    "laughComposition": [
+      { "typeId": "语言包袱", "percentage": 50 },
+      { "typeId": "夸张视听", "percentage": 50 }
+    ]
+  },
+  {
+    "name": "杂技表演",
+    "year": 1983,
+    "laughComposition": [{ "typeId": "夸张视听", "percentage": 100 }]
+  },
+  {
+    "name": "弹钢琴",
+    "year": 1983,
+    "laughComposition": [{ "typeId": "语言包袱", "percentage": 50 },
+      { "typeId": "夸张视听", "percentage": 50 }]
+  },
+  {
+    "name": "阿Q的独白",
+    "year": 1983,
+    "laughComposition": [
+      { "typeId": "语言包袱", "percentage": 50 },
+      { "typeId": "人物反差", "percentage": 50 }
+    ]
+  },
+  {
+    "name": "戏剧杂谈",
+    "year": 1983,
+    "laughComposition": [
+      { "typeId": "语言包袱", "percentage": 100 }
+    ]
+  }
+];
+
+// 自动转换函数：将用户格式转换为系统内部格式，并过滤掉无效数据
+const transformUserData = (raw: any[]): EvolutionProgram[] => {
+  return raw
+    .filter(item => item.laughComposition && item.laughComposition.length > 0)
+    .map((item, idx) => ({
+      id: `user-import-${idx}`,
+      name: item.name,
+      year: item.year,
+      tags: item.tags || ['1983开元', '经典复刻'],
+      composition: item.laughComposition.map((comp: any) => ({
+        type: comp.typeId as HumorType,
+        ratio: comp.percentage / 100
+      }))
+    }));
+};
+
 const generateEvolutionData = () => {
   const data: EvolutionProgram[] = [];
-  const startYear = 1983;
+  const startYear = 1984; // 从1984年开始生成，避免与用户1983数据重叠
   const endYear = 2024;
-  const totalItems = 400; // Updated to 400 items for a 20x20 grid
+  const totalItems = 390; 
 
   for (let i = 0; i < totalItems; i++) {
     const year = startYear + Math.floor((i / totalItems) * (endYear - startYear + 1));
@@ -30,12 +91,22 @@ const generateEvolutionData = () => {
       });
       remaining -= ratio;
     }
-    data.push({ id: `prog-${i}`, name: `节目 Archive #${1000 + i}`, year, tags: ['经典回响', '时代标签'].slice(0, 1 + Math.floor(Math.random() * 2)), composition });
+    data.push({ 
+      id: `prog-${i}`, 
+      name: `节目 Archive #${1000 + i}`, 
+      year, 
+      tags: ['经典回响', '时代标签'].slice(0, 1 + Math.floor(Math.random() * 2)), 
+      composition 
+    });
   }
   return data;
 };
 
-export const EVOLUTION_DATA = generateEvolutionData();
+// 合并用户导入数据与系统现有数据
+export const EVOLUTION_DATA = [
+  ...transformUserData(USER_RAW_DATA),
+  ...generateEvolutionData()
+];
 
 export const VIDEOS: VideoData[] = [
   { id: 'yesterday-today-tomorrow', title: '昨天今天明天', type: '小品', videoUrl: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4', poster: 'https://images.unsplash.com/photo-1541535650810-10d26f5d2abb?w=800', humorPoints: [{ timestamp: 5, content: '我叫白云，我叫黑土', mechanism: '人物设定反差', analysis: '经典的农民形象与宏大的晚会舞台形成鲜明对比。' }] },
