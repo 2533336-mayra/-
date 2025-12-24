@@ -15,7 +15,7 @@ const generateEvolutionData = () => {
   const data: EvolutionProgram[] = [];
   const startYear = 1983;
   const endYear = 2024;
-  const totalItems = 824; 
+  const totalItems = 400; // Updated to 400 items for a 20x20 grid
 
   for (let i = 0; i < totalItems; i++) {
     const year = startYear + Math.floor((i / totalItems) * (endYear - startYear + 1));
@@ -53,6 +53,7 @@ export const PERFORMERS: Performer[] = [
   { id: 'NQ', name: '牛群', firstYear: 1987, totalWorks: 12, bio: '冯巩的最佳拍档。', quotes: ['点子公司'], role: '奠基人' },
   { id: 'GDL', name: '郭冬临', firstYear: 1993, totalWorks: 21, bio: '春晚“好男人”专业户。', quotes: ['有话好好说'], role: '中坚' },
   { id: 'XSY', name: '小沈阳', firstYear: 2009, totalWorks: 3, bio: '赵本山的弟子。', quotes: ['这个真没有'], role: '新锐' },
+  { id: 'PCJ', name: '潘长江', firstYear: 1992, totalWorks: 20, bio: '以其独特的表演风格深受喜爱。', quotes: ['浓缩的都是精华'], role: '奠基人' },
 ];
 
 export const RELATIONS: Relation[] = [

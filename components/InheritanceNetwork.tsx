@@ -108,11 +108,6 @@ const InheritanceNetwork: React.FC = () => {
                   setSelectedNode(isSelected ? null : perf.id);
                 }}
               >
-                {/* Node Outer Glow */}
-                {isSelected && (
-                  <circle cx={pos.x} cy={pos.y} r="50" fill="none" stroke="#eab308" strokeWidth="1" strokeDasharray="5,5" className="animate-spin-slow" />
-                )}
-                
                 {/* Main Node */}
                 <circle 
                   cx={pos.x} cy={pos.y} r={isSelected ? "38" : "28"} 
@@ -157,17 +152,6 @@ const InheritanceNetwork: React.FC = () => {
           </div>
         </div>
       </div>
-      
-      <style>{`
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-          transform-origin: center;
-          animation: spin-slow 15s linear infinite;
-        }
-      `}</style>
     </div>
   );
 };

@@ -2,191 +2,188 @@
 import React, { useState } from 'react';
 import { PERFORMERS } from '../constants';
 import { Performer } from '../types';
-import { Star, Quote, Award, Sparkles, MapPin } from 'lucide-react';
+import { Star, Quote, Award, Sparkles, MapPin, X } from 'lucide-react';
 
-// 北斗七星坐标映射 (百分比布局)
-const DIPPER_POINTS = [
-  { x: 12, y: 35, name: '摇光' }, 
-  { x: 25, y: 55, name: '开阳' }, 
-  { x: 40, y: 65, name: '玉衡' }, 
-  { x: 55, y: 72, name: '天权' }, 
-  { x: 75, y: 62, name: '天玑' }, 
-  { x: 82, y: 38, name: '天璇' }, 
-  { x: 68, y: 18, name: '天枢' }, 
+// Coordinates calibrated to match the visual reference image
+const DIPPER_PERFORMERS = [
+  { id: 'FG', x: 16, y: 32, label: '冯巩' },
+  { id: 'CM', x: 26, y: 56, label: '蔡明' },
+  { id: 'GDL', x: 45, y: 59, label: '郭冬临' },
+  { id: 'ZBS', x: 55, y: 46, label: '赵本山' },
+  { id: 'PCJ', x: 74, y: 37, label: '潘长江' },
+  { id: 'ZLR', x: 86, y: 24, label: '赵丽蓉' },
+  { id: 'ST', x: 93, y: 46, label: '沈腾' },
 ];
 
 const BigDipperConstellation: React.FC = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const dipperPerformers = PERFORMERS.slice(0, 7);
+  
+  const performersData = DIPPER_PERFORMERS.map(p => {
+    const data = PERFORMERS.find(per => per.id === p.id) || PERFORMERS[0];
+    return { ...p, data };
+  });
 
-  const activePerformer = hoveredIndex !== null ? dipperPerformers[hoveredIndex] : null;
-  const activePoint = hoveredIndex !== null ? DIPPER_POINTS[hoveredIndex] : null;
+  const activePerformer = hoveredIndex !== null ? performersData[hoveredIndex] : null;
+
+  // Generate the curved path using SVG Bezier
+  const pathD = "M 16 32 Q 21 56 26 56 T 45 59 T 55 46 T 74 37 T 86 24 T 93 46";
 
   return (
-    <div className="relative w-full h-[700px] mt-10 overflow-hidden bg-black/40 rounded-[4rem] border border-white/5 shadow-2xl backdrop-blur-sm">
-      {/* Background Deep Space Stars */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
-        {[...Array(80)].map((_, i) => (
+    <div className="relative w-full h-[850px] mt-10 overflow-hidden bg-[#1a0505] rounded-[3rem] border border-red-900/20 shadow-[0_0_100px_rgba(0,0,0,0.8)]">
+      
+      {/* Background Star Field */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(150)].map((_, i) => (
           <div 
             key={i} 
-            className="absolute bg-white rounded-full animate-pulse"
+            className="absolute bg-white rounded-full animate-twinkle"
             style={{ 
-              width: Math.random() * 2 + 1 + 'px', 
-              height: Math.random() * 2 + 1 + 'px',
+              width: Math.random() * 1.5 + 0.5 + 'px', 
+              height: Math.random() * 1.5 + 0.5 + 'px',
               top: Math.random() * 100 + '%',
               left: Math.random() * 100 + '%',
+              opacity: Math.random() * 0.7,
               animationDelay: Math.random() * 5 + 's',
-              animationDuration: (Math.random() * 3 + 2) + 's'
+              animationDuration: (Math.random() * 4 + 2) + 's'
             }}
           ></div>
         ))}
       </div>
 
-      {/* Constellation Lines (Connecting the dots) */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none">
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
-          <feMerge>
-            <feMergeNode in="coloredBlur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
+      {/* Header Info */}
+      <div className="absolute top-12 left-0 right-0 text-center z-30 space-y-4 pointer-events-none">
+          <h2 className="text-5xl font-black text-yellow-500 font-cursive tracking-wider drop-shadow-[0_4px_10px_rgba(0,0,0,1)]">
+            群星璀璨：春晚“北斗七星”
+          </h2>
+          <p className="text-white/40 text-sm font-medium italic tracking-widest">鼠标悬停于星点，探寻传奇演艺生涯</p>
+      </div>
+
+      {/* Constellation SVG Layer */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
         <path 
-          d={`M ${DIPPER_POINTS.map(p => `${p.x}%,${p.y}%`).join(' L ')}`}
+          d={pathD}
           fill="none"
-          stroke="rgba(234, 179, 8, 0.15)"
-          strokeWidth="1.5"
-          strokeDasharray="10,5"
-          filter="url(#glow)"
-          className="animate-[dash_30s_linear_infinite]"
+          stroke="rgba(234, 179, 8, 0.2)"
+          strokeWidth="0.25"
+          strokeDasharray="1, 1.5"
+          className="animate-path-flow"
         />
-        <style>{`
-          @keyframes dash {
-            to { stroke-dashoffset: -300; }
-          }
-        `}</style>
       </svg>
 
-      {/* Star Nodes */}
-      {dipperPerformers.map((performer, i) => (
-        <div 
-          key={performer.id}
-          className="absolute group z-20"
-          style={{ top: `${DIPPER_POINTS[i].y}%`, left: `${DIPPER_POINTS[i].x}%`, transform: 'translate(-50%, -50%)' }}
-          onMouseEnter={() => setHoveredIndex(i)}
-          onMouseLeave={() => setHoveredIndex(null)}
-        >
-          <div className="relative flex items-center justify-center cursor-none">
-             {/* Halo effects */}
-             <div className={`w-12 h-12 rounded-full bg-yellow-500/20 blur-md absolute transition-all duration-700 ${hoveredIndex === i ? 'scale-150 opacity-100' : 'scale-50 opacity-0'}`}></div>
-             <div className={`w-8 h-8 rounded-full border border-yellow-500/30 absolute animate-ping transition-opacity duration-300 ${hoveredIndex === i ? 'opacity-100' : 'opacity-0'}`}></div>
-             
-             {/* Star Core */}
-             <div className={`w-5 h-5 rounded-full border-2 border-yellow-400 transition-all duration-500 flex items-center justify-center ${hoveredIndex === i ? 'bg-yellow-400 scale-125 shadow-[0_0_30px_rgba(234,179,8,1)]' : 'bg-black/40'}`}>
-                <Star size={10} fill={hoveredIndex === i ? "white" : "rgba(234,179,8,0.5)"} className={`transition-colors ${hoveredIndex === i ? 'text-white' : 'text-yellow-500'}`} />
-             </div>
+      {/* Performer Stars & Hover Cards */}
+      {performersData.map((p, i) => {
+        const isHovered = hoveredIndex === i;
+        // Determine pop-up side based on x position to prevent screen clipping
+        const side = p.x > 50 ? 'left' : 'right';
 
-             {/* Star Name Label */}
-             <div className={`absolute top-10 left-1/2 -translate-x-1/2 transition-all duration-300 ${hoveredIndex === i ? 'opacity-100 translate-y-0' : 'opacity-40 -translate-y-2'}`}>
-               <span className="text-yellow-500/90 font-black text-[11px] tracking-[0.3em] whitespace-nowrap uppercase italic bg-black/40 px-2 py-0.5 rounded backdrop-blur-sm">
-                 {performer.name}
-               </span>
-             </div>
-          </div>
-        </div>
-      ))}
+        return (
+          <div 
+            key={p.id}
+            className="absolute z-20"
+            style={{ top: `${p.y}%`, left: `${p.x}%`, transform: 'translate(-50%, -50%)' }}
+            onMouseEnter={() => setHoveredIndex(i)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            <div className="relative flex flex-col items-center">
+               {/* Star Core & Halo */}
+               <div className="relative flex items-center justify-center">
+                  <div className={`absolute w-12 h-12 bg-yellow-600/30 rounded-full blur-xl transition-all duration-700 ${isHovered ? 'scale-150 opacity-100' : 'scale-100 opacity-40'}`}></div>
+                  <div className={`w-4 h-4 rounded-full border-[1.5px] border-yellow-400 bg-white shadow-[0_0_20px_rgba(234,179,8,1)] transition-all duration-300 ${isHovered ? 'scale-150 rotate-45' : ''}`}></div>
+               </div>
 
-      {/* Follow-style Character Card */}
-      {activePerformer && activePoint && (
-        <div 
-          className={`absolute z-50 w-[340px] transition-all duration-500 ease-out animate-in fade-in zoom-in-95 pointer-events-none`}
-          style={{ 
-            top: activePoint.y > 60 ? 'auto' : `${activePoint.y}%`,
-            bottom: activePoint.y > 60 ? `${100 - activePoint.y}%` : 'auto',
-            left: activePoint.x < 50 ? `${activePoint.x + 4}%` : 'auto',
-            right: activePoint.x >= 50 ? `${100 - activePoint.x + 4}%` : 'auto',
-            transform: activePoint.y > 60 ? 'translateY(20px)' : 'translateY(-20px)'
-          }}
-        >
-          <div className="relative bg-white/95 backdrop-blur-2xl rounded-[2.5rem] p-8 shadow-[0_50px_100px_rgba(0,0,0,0.6)] border-t-[12px] border-red-700 overflow-hidden">
-            {/* Subtle decorative background */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-red-50 rounded-full -mr-16 -mt-16 opacity-50"></div>
-            
-            <div className="relative flex items-center justify-between mb-8">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-red-700 rounded-2xl shadow-lg shadow-red-700/30">
-                      <Sparkles className="text-white" size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-black text-red-950 tracking-tighter">{activePerformer.name}</h3>
-                    <div className="flex items-center gap-1.5 text-[9px] font-black text-red-700/60 uppercase tracking-widest mt-1">
-                      <MapPin size={10} /> {activePoint.name} · 星位
-                    </div>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-[10px] font-black text-gray-300 uppercase tracking-tighter">Established</div>
-                  <div className="text-xl font-black text-red-900 leading-none">{activePerformer.firstYear}</div>
-                </div>
-            </div>
+               {/* Name Label */}
+               <div className={`mt-3 transition-transform duration-300 ${isHovered ? 'scale-110' : ''}`}>
+                 <span className={`font-cursive text-xl tracking-tighter whitespace-nowrap drop-shadow-md transition-colors duration-300 ${isHovered ? 'text-white' : 'text-yellow-500/80'}`}>
+                   {p.label}
+                 </span>
+               </div>
 
-            <div className="space-y-6 relative">
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                        <span className="text-[9px] font-black text-gray-400 uppercase block mb-1">春晚征程</span>
-                        <div className="text-2xl font-black text-red-800 tracking-tighter">{activePerformer.totalWorks} <span className="text-xs text-red-800/60">部作品</span></div>
-                    </div>
-                    <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 flex flex-col justify-center">
-                        <span className="text-[9px] font-black text-gray-400 uppercase block mb-1">江湖地位</span>
-                        <div className="text-sm font-black text-red-900 bg-red-100/50 px-2 py-0.5 rounded inline-block w-fit">
-                          {activePerformer.role}
-                        </div>
-                    </div>
-                </div>
+               {/* POP-UP 科普卡片 (Floating Info Card) */}
+               {isHovered && (
+                 <div 
+                   className={`absolute top-0 z-[100] w-[320px] pointer-events-none animate-in fade-in zoom-in-95 duration-300 ${side === 'right' ? 'left-16 origin-left' : 'right-16 origin-right text-right'}`}
+                 >
+                   <div className="bg-white/95 backdrop-blur-3xl rounded-[2rem] p-6 shadow-[0_30px_60px_rgba(0,0,0,0.6)] border-t-8 border-red-800">
+                      <div className={`flex items-center gap-4 mb-4 ${side === 'right' ? 'flex-row' : 'flex-row-reverse'}`}>
+                          <div className="p-3 bg-red-800 rounded-2xl shadow-lg">
+                            <Sparkles className="text-white" size={20} />
+                          </div>
+                          <div>
+                            <h3 className="text-2xl font-black text-red-950 tracking-tighter">{p.data.name}</h3>
+                            <div className={`flex items-center gap-2 ${side === 'right' ? '' : 'justify-end'}`}>
+                               <span className="px-1.5 py-0.5 bg-red-100 text-red-800 text-[8px] font-black uppercase tracking-widest rounded">{p.data.role}</span>
+                               <span className="text-[8px] text-gray-400 font-bold uppercase tracking-widest">{p.data.firstYear}年首秀</span>
+                            </div>
+                          </div>
+                      </div>
 
-                <div className="relative">
-                  <div className="absolute -left-2 top-0 text-red-100">
-                    <Quote size={40} fill="currentColor" />
-                  </div>
-                  <p className="relative text-sm leading-relaxed text-gray-800 font-bold italic pl-4">
-                    {activePerformer.bio}
-                  </p>
-                </div>
+                      <div className="space-y-4">
+                         <div className="flex gap-2">
+                            <div className="flex-1 bg-red-50/50 p-3 rounded-2xl border border-red-100/50">
+                               <span className="text-[8px] font-black text-red-800/40 uppercase tracking-widest block mb-0.5">作品存量</span>
+                               <div className="text-lg font-black text-red-950">{p.data.totalWorks} <span className="text-[10px] font-medium opacity-50">部经典</span></div>
+                            </div>
+                            <div className="flex-1 bg-red-50/50 p-3 rounded-2xl border border-red-100/50 text-left">
+                               <span className="text-[8px] font-black text-red-800/40 uppercase tracking-widest block mb-0.5">演艺地位</span>
+                               <div className="text-xs font-black text-red-950 flex items-center gap-1">
+                                  <Award size={12} className="text-yellow-600" /> 一代宗师
+                               </div>
+                            </div>
+                         </div>
 
-                <div>
-                   <div className="flex items-center gap-2 mb-3">
-                      <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-red-100"></div>
-                      <span className="text-[9px] font-black text-red-700 uppercase tracking-[0.3em]">经典回响</span>
-                      <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-red-100"></div>
+                         <div className={`relative py-1 ${side === 'right' ? 'pl-4 border-l-2' : 'pr-4 border-r-2'} border-red-100`}>
+                            <p className="text-xs text-red-950 font-medium leading-relaxed italic">
+                              "{p.data.bio}"
+                            </p>
+                         </div>
+
+                         <div className="pt-2 border-t border-red-50">
+                            <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest block mb-2">经典金句</span>
+                            <div className={`flex flex-wrap gap-1.5 ${side === 'right' ? '' : 'justify-end'}`}>
+                               {p.data.quotes.slice(0, 2).map(quote => (
+                                 <div key={quote} className="px-3 py-1.5 bg-red-50 text-red-900 font-bold text-[10px] rounded-lg">
+                                    “{quote}”
+                                 </div>
+                               ))}
+                            </div>
+                         </div>
+                      </div>
                    </div>
-                   <div className="flex flex-wrap gap-2">
-                      {activePerformer.quotes.map(q => (
-                        <div key={q} className="bg-red-50/80 text-red-900 text-[10px] font-black px-3 py-2 rounded-xl border border-red-100/50 shadow-sm">
-                          “{q}”
-                        </div>
-                      ))}
-                   </div>
-                </div>
-            </div>
-
-            <div className="mt-8 pt-6 border-t border-gray-100 flex justify-between items-center">
-                <div className="flex items-center gap-2 text-[8px] text-gray-400 font-mono tracking-tighter italic">
-                   <Award size={14} className="text-yellow-600" />
-                   <span>MEMORY ARCHIVES VOL. 2</span>
-                </div>
-                <div className="w-8 h-1 bg-red-700 rounded-full"></div>
+                   
+                   {/* Visual Link Line (Connector) */}
+                   <div className={`absolute top-1/2 -translate-y-1/2 w-8 h-[1px] bg-gradient-to-r ${side === 'right' ? 'from-yellow-500/0 to-yellow-500 -left-12' : 'from-yellow-500 to-yellow-500/0 -right-12'}`}></div>
+                 </div>
+               )}
             </div>
           </div>
-          
-          {/* Visual indicator line connecting to star (optional flourish) */}
-          <div className={`absolute top-1/2 w-10 h-[1px] bg-red-700/30 ${activePoint.x < 50 ? '-left-10' : '-right-10'}`}></div>
-        </div>
-      )}
+        );
+      })}
 
-      {/* Bottom Large Background Title */}
-      <div className="absolute left-10 bottom-10 select-none pointer-events-none">
-         <h4 className="text-white/[0.03] text-[12rem] font-black tracking-tighter leading-none italic uppercase">Master</h4>
+      {/* Decorative Corner Elements */}
+      <div className="absolute top-10 left-10 pointer-events-none select-none opacity-10">
+         <div className="text-[10rem] font-black italic tracking-tighter text-white uppercase leading-none">Legend</div>
       </div>
+      <div className="absolute bottom-10 right-10 pointer-events-none select-none opacity-10 transform rotate-180">
+         <div className="text-[10rem] font-black italic tracking-tighter text-white uppercase leading-none">Iconic</div>
+      </div>
+
+      <style>{`
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.15; transform: scale(1); }
+          50% { opacity: 0.8; transform: scale(1.15); }
+        }
+        .animate-twinkle {
+          animation: twinkle var(--duration, 4s) ease-in-out infinite;
+        }
+        @keyframes pathFlow {
+          from { stroke-dashoffset: 100; }
+          to { stroke-dashoffset: 0; }
+        }
+        .animate-path-flow {
+          stroke-dasharray: 2;
+          animation: pathFlow 30s linear infinite;
+        }
+      `}</style>
     </div>
   );
 };

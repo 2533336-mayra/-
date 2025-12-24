@@ -30,15 +30,15 @@ const HumorEvolutionGrid: React.FC = () => {
         <div className="mb-8 flex items-center justify-between">
            <div className="flex items-center gap-4">
               <div className="p-2 bg-yellow-500 rounded-lg"><TrendingUp size={20} className="text-red-950" /></div>
-              <h3 className="text-2xl font-black text-white tracking-tighter">历年节目笑点构成矩阵</h3>
+              <h3 className="text-2xl font-black text-white tracking-tighter">历年节目笑点构成矩阵 (25x16)</h3>
            </div>
            <div className="flex items-center gap-2 text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">
               <MousePointer2 size={12} /> Hover for details · Click sidebar to filter
            </div>
         </div>
 
-        {/* The Grid Matrix */}
-        <div className="grid grid-cols-12 md:grid-cols-20 lg:grid-cols-24 gap-1.5 auto-rows-[40px]">
+        {/* The Grid Matrix - Fixed 25 columns */}
+        <div className="grid grid-cols-25 gap-1 auto-rows-[42px]">
           {EVOLUTION_DATA.map((prog) => {
             const isHighlighted = !selectedType || prog.composition.some(c => c.type === selectedType);
             
@@ -47,7 +47,7 @@ const HumorEvolutionGrid: React.FC = () => {
                 key={prog.id}
                 onMouseEnter={() => setHoveredProgram(prog)}
                 onMouseLeave={() => setHoveredProgram(null)}
-                className={`relative group cursor-none transition-all duration-500 rounded-sm overflow-hidden border border-white/5 ${isHighlighted ? 'opacity-100 scale-100' : 'opacity-10 scale-[0.85] grayscale'}`}
+                className={`relative group cursor-none transition-all duration-500 rounded-[2px] overflow-hidden border border-white/5 ${isHighlighted ? 'opacity-100 scale-100' : 'opacity-10 scale-[0.85] grayscale'}`}
               >
                 {/* Segments representing humor composition */}
                 <div className="flex h-full w-full">
@@ -151,8 +151,7 @@ const HumorEvolutionGrid: React.FC = () => {
       </div>
 
       <style>{`
-        .grid-cols-20 { grid-template-columns: repeat(20, minmax(0, 1fr)); }
-        .grid-cols-24 { grid-template-columns: repeat(24, minmax(0, 1fr)); }
+        .grid-cols-25 { grid-template-columns: repeat(25, minmax(0, 1fr)); }
       `}</style>
     </div>
   );
