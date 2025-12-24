@@ -52,7 +52,6 @@ const App: React.FC = () => {
     <div className="relative min-h-screen cursor-none select-none overflow-x-hidden">
       <CursorMagnifier />
 
-      {/* --- HOME VIEW --- */}
       {state === AppState.HOME && (
         <div className="relative h-screen flex flex-col items-center justify-center overflow-hidden transition-opacity duration-1000 bg-[#a00]" onClick={handleToChapterOne}>
           <FilmstripBackground />
@@ -70,28 +69,22 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* --- TRANSITION --- */}
       {isTransitioning && (
         <StageCurtain key={state} onOpened={handleCurtainOpened} />
       )}
 
-      {/* --- CHAPTER ONE VIEW --- */}
       {state === AppState.CHAPTER_ONE && (
         <div className="min-h-screen bg-[#800] animate-in fade-in duration-1000">
           <header className="sticky top-0 z-50 bg-[#700]/95 backdrop-blur-2xl border-b border-yellow-500/20 py-5 px-10 flex justify-between items-center shadow-xl">
             <div className="flex items-center gap-6">
-                <button 
-                  onClick={handleToHome}
-                  className="p-2 hover:bg-yellow-500/20 rounded-lg transition-colors group"
-                  title="回溯首页"
-                >
+                <button onClick={handleToHome} className="p-2 hover:bg-yellow-500/20 rounded-lg transition-colors group" title="回溯首页">
                   <RotateCcw className="text-yellow-500 group-hover:rotate-[-45deg] transition-transform" size={20} />
                 </button>
                 <div className="flex items-center gap-4">
                     <div className="p-2.5 bg-yellow-500 rounded-xl shadow-lg shadow-yellow-500/20"><Tv className="text-red-950" size={22} /></div>
                     <div>
-                        <h2 className="text-xl font-black tracking-tight text-white">{activeTab === 'ORIGINS' ? '第一篇章：笑点的“内源”' : '第一篇章：笑点的“演变”'}</h2>
-                        <p className="text-[10px] text-yellow-400/70 uppercase tracking-[0.3em] font-black">CHAPTER 01: ORIGINS & EVOLUTION</p>
+                        <h2 className="text-xl font-black tracking-tight text-white">第一篇章：笑点的“内源机制”</h2>
+                        <p className="text-[10px] text-yellow-400/70 uppercase tracking-[0.3em] font-black">CHAPTER 01: THREE MODALITIES OF HUMOR</p>
                     </div>
                 </div>
             </div>
@@ -104,11 +97,34 @@ const App: React.FC = () => {
           <main className="container mx-auto py-24 px-6 min-h-screen">
             {activeTab === 'ORIGINS' ? (
               <div className="animate-in fade-in duration-700">
-                <div className="max-w-2xl mx-auto mb-24 text-center space-y-8">
-                    <p className="text-3xl leading-relaxed text-yellow-50/90 font-cursive">经典的“包袱”背后，都隐藏着精密的幽默工程学。</p>
-                    <div className="w-24 h-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent mx-auto"></div>
+                <div className="max-w-4xl mx-auto mb-24 text-center space-y-8">
+                    <p className="text-3xl leading-relaxed text-yellow-50/90 font-cursive">
+                      幽默的三副面孔：从小品的生活解构，到相声的语言艺术，再到魔术的意外惊喜。
+                    </p>
+                    <div className="flex justify-center gap-12 text-[10px] font-black text-yellow-500/50 uppercase tracking-[0.3em]">
+                       <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-red-500"></div> 小品 SKIT</span>
+                       <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-blue-500"></div> 相声 CROSS-TALK</span>
+                       <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-yellow-500"></div> 魔术 MAGIC</span>
+                    </div>
                 </div>
-                <div className="flex flex-col gap-40">{VIDEOS.map((video) => (<OldTVPlayer key={video.id} data={video} />))}</div>
+                
+                {/* 核心展示区：三个电视机 */}
+                <div className="flex flex-col gap-56">
+                  {VIDEOS.map((video, idx) => (
+                    <div key={video.id} className="relative">
+                      {/* 类别装饰背板 */}
+                      <div className="absolute -top-12 -left-12 opacity-5 select-none pointer-events-none">
+                         <span className="text-[15rem] font-black italic text-white uppercase leading-none">
+                           0{idx + 1}
+                         </span>
+                      </div>
+                      <div className="absolute top-0 right-0 p-4 bg-yellow-500 text-red-950 font-black text-xs rounded-bl-3xl shadow-xl z-50">
+                        {video.type} CATEGORY
+                      </div>
+                      <OldTVPlayer data={video} />
+                    </div>
+                  ))}
+                </div>
               </div>
             ) : (
               <div className="animate-in fade-in duration-700 relative">
@@ -129,16 +145,11 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* --- CHAPTER TWO VIEW --- */}
       {state === AppState.CHAPTER_TWO && (
         <div className="min-h-screen bg-[#020202] animate-in fade-in duration-1000">
           <header className="sticky top-0 z-50 bg-black/80 backdrop-blur-2xl border-b border-white/5 py-5 px-10 flex justify-between items-center shadow-2xl">
             <div className="flex items-center gap-6">
-                <button 
-                  onClick={handleToChapterOne}
-                  className="p-2 hover:bg-red-700/20 rounded-lg transition-colors group"
-                  title="回溯第一篇章"
-                >
+                <button onClick={handleToChapterOne} className="p-2 hover:bg-red-700/20 rounded-lg transition-colors group" title="回溯第一篇章">
                   <RotateCcw className="text-red-600 group-hover:rotate-[-45deg] transition-transform" size={20} />
                 </button>
                 <div className="flex items-center gap-4">
@@ -160,7 +171,6 @@ const App: React.FC = () => {
                 <h2 className="text-5xl font-black text-white italic tracking-tighter">幽默的火炬，在星辰间传递。</h2>
                 <p className="text-xl text-white/60 font-medium">寻找那些编织快乐的人，探寻他们如何塑造一个时代的集体记忆。</p>
             </div>
-            
             {activeTab === 'CONSTELLATION' ? (
               <div className="flex flex-col gap-20">
                 <BigDipperConstellation />
@@ -190,16 +200,11 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* --- CHAPTER THREE VIEW --- */}
       {state === AppState.CHAPTER_THREE && (
         <div className="min-h-screen bg-[#1a0505] animate-in fade-in duration-1000">
            <header className="sticky top-0 z-50 bg-[#2d0a0a]/90 backdrop-blur-2xl border-b border-red-900/50 py-5 px-10 flex justify-between items-center shadow-2xl">
             <div className="flex items-center gap-6">
-                <button 
-                  onClick={handleToChapterTwo}
-                  className="p-2 hover:bg-yellow-600/20 rounded-lg transition-colors group"
-                  title="回溯第二篇章"
-                >
+                <button onClick={handleToChapterTwo} className="p-2 hover:bg-yellow-600/20 rounded-lg transition-colors group" title="回溯第二篇章">
                   <RotateCcw className="text-yellow-600 group-hover:rotate-[-45deg] transition-transform" size={20} />
                 </button>
                 <div className="flex items-center gap-4">
@@ -217,7 +222,6 @@ const App: React.FC = () => {
                </div>
             </div>
           </header>
-
           <main className="container mx-auto py-24 px-12 min-h-screen">
              <div className="max-w-4xl mx-auto mb-24 text-center">
                 <div className="inline-flex items-center gap-3 bg-red-900/30 px-6 py-2 rounded-full border border-red-800/50 mb-8">
@@ -226,16 +230,14 @@ const App: React.FC = () => {
                 </div>
                 <h2 className="text-6xl font-black text-white italic tracking-tighter mb-8 leading-tight">当笑声越过屏幕，<br/>在数字海洋中泛起涟漪。</h2>
                 <p className="text-xl text-white/40 font-medium leading-relaxed">
-                   从微博的千万级转发，到日常生活的社交暗号，<br/>每一个春晚“笑梗”的爆红，都是一次社会情绪的集体共鸣。
+                   从微博的千万级转发，到日常生活的社交暗号，每一个春晚“笑梗”的爆红，都是一次社会情绪的集体共鸣。
                 </p>
              </div>
-
              <div className="space-y-32">
                 {TREND_DATA.map(trend => (
                   <MemeTrendStream key={trend.id} data={trend} />
                 ))}
              </div>
-
              <div className="mt-40 p-12 bg-red-950/20 rounded-[3rem] border border-red-900/30 text-center flex flex-col items-center gap-12">
                 <div>
                   <h4 className="text-2xl font-black text-white mb-4">追踪结论：幽默的长尾效应</h4>
@@ -243,7 +245,6 @@ const App: React.FC = () => {
                      数据显示，春晚笑点的寿命远超演出当晚。通过情感认同、身份暗示及突发事件的二次解构，这些“梗”最终沉淀为中国互联网文化的一部分。
                   </p>
                 </div>
-                
                 <button onClick={handleToChapterTwo} className="group relative inline-flex items-center gap-4 px-12 py-6 border-2 border-yellow-600/30 text-yellow-600 rounded-2xl font-black text-xl hover:bg-yellow-600 hover:text-white transition-all">
                   <ArrowLeft size={24} className="group-hover:-translate-x-2 transition-transform" />
                   <span>回溯第二篇章：笑点的“推手”</span>
