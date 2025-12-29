@@ -12,8 +12,7 @@ export enum AppState {
 
 export type SubTab = 'ORIGINS' | 'EVOLUTION' | 'CONSTELLATION' | 'NETWORK' | 'TRENDS';
 
-// Added missing exported HumorType to fix constants.tsx and HumorEvolutionGrid.tsx errors
-export type HumorType = '语言包袱' | '人物反差' | '逻辑乌龙' | '民生吐槽' | '夸张视听';
+export type HumorType = '语言包袱' | '人物反差' | '逻辑乌龙' | '民生吐槽' | '夸张视听' | '无' | '其他';
 
 export interface HumorPoint {
   timestamp: number;
@@ -37,7 +36,6 @@ export interface VideoData {
   wordCloud: WordCloudItem[];
 }
 
-// Added missing exported EvolutionProgram to fix constants.tsx and HumorEvolutionGrid.tsx errors
 export interface EvolutionProgram {
   id: string;
   name: string;
@@ -49,7 +47,6 @@ export interface EvolutionProgram {
   }[];
 }
 
-// Added missing exported Performer to fix constants.tsx and BigDipperConstellation.tsx errors
 export interface Performer {
   id: string;
   name: string;
@@ -60,14 +57,12 @@ export interface Performer {
   role: string;
 }
 
-// Added missing exported Relation to fix constants.tsx errors
 export interface Relation {
   source: string;
   target: string;
   type: string;
 }
 
-// Added missing exported MemeTrend to fix constants.tsx and MemeTrendStream.tsx errors
 export interface MemeTrend {
   id: string;
   hashtag: string;
@@ -95,7 +90,6 @@ export interface ActorStats {
   works: string[];
 }
 
-// Defined local simulation interfaces to fix "Cannot find namespace 'd3'" errors
 export interface SimulationNodeDatum {
   index?: number;
   x?: number;
